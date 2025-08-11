@@ -33,3 +33,10 @@ For more info on any given subcommand: `gsv -h subcommand_name`.
 Ingests a 128 bit Known‑Answer Test (KAT) vector file for the Ascon AEAD algorithm ([example](https://github.com/ascon/ascon-c/blob/main/crypto_aead/asconaead128/LWC_AEAD_KAT_128_128.txt)) and produces a SV ROM. It currently omits Key and Nonce ROMS (they're seemingly consts).
 
 Flag `--sb` swaps the byte order of the data portion (padding unchanged).
+
+## Updating
+
+Run the following to update to the latest release
+```sh
+gsv update
+```
