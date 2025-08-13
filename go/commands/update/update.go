@@ -35,23 +35,27 @@ var Command = &cli.Command{
 			return fmt.Errorf("failed to get appVersion from context")
 		}
 		// update
-		return update(ctx, version)
+		return update(ctx, version, cmd.Bool("yes"))
 	},
 }
 
-func update(ctx context.Context, version string) error {
+func update(ctx context.Context, version string, autoYes bool) error {
 
 	if version == "vX.X.X" {
 		fmt.Println("Dev build detected, skipping update.")
 		return nil
 	}
 
-	lCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	lCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
 	latest, err := git.LatestGitHubReleaseTag(lCtx, RepoURL)
 	if err != nil {
-		return err
+		// if the context timed out, surface a clearer message but do not block other commands
+		if lCtx.Err() != nil {
+			return fmt.Errorf("failed to check latest release: %w", lCtx.Err())
+		}
+		return fmt.Errorf("failed to check latest release: %w", err)
 	}
 
 	updateAvailable := semver.Compare(latest, version) > 0
@@ -74,26 +78,38 @@ func update(ctx context.Context, version string) error {
 	if errSelf != nil {
 		selfReal = self // fallback to self if symlink resolution fails
 	}
-	// ensure the path is absolute
-	selfPath, err := filepath.Abs(selfReal)
+	selfPath, err := filepath.Abs(selfReal) // ensure the path is absolute
 	if err != nil {
 		return fmt.Errorf("failed to get absolute path of executable: %w", err)
 	}
 
+	// check if sudo is required
 	runSudo := false
 	if !isRoot {
+		homeDir, herr := os.UserHomeDir()
+		if herr != nil || homeDir == "" {
+			homeDir = os.Getenv("HOME")
+		}
 		if filepath.Dir(selfPath) == "/usr/local/bin" {
-			if runSudo, err = prompt.YesNo("This update requires root privileges. Do you want to run the update with sudo?"); err != nil {
-				return fmt.Errorf("failed to prompt for sudo: %w", err)
-			}
-			if !runSudo {
-				fmt.Println("Update aborted. Please run the command with sudo to update.")
-				return nil
+			if autoYes {
+				runSudo = true
+			} else {
+				if runSudo, err = prompt.YesNo("This update requires root privileges. Do you want to run the update with sudo?"); err != nil {
+					return fmt.Errorf("failed to prompt for sudo: %w", err)
+				}
+				if !runSudo {
+					fmt.Println("Update aborted. Please run the command with sudo to update.")
+					return nil
+				}
 			}
 		} else {
-			if filepath.Dir(selfPath) != filepath.Join(os.Getenv("HOME"), ".local", "bin") {
-				if runSudo, err = prompt.YesNo("Unsure if sudo is required. Do you want to run the update with sudo?"); err != nil {
-					return fmt.Errorf("failed to prompt for sudo: %w", err)
+			if filepath.Dir(selfPath) != filepath.Join(homeDir, ".local", "bin") {
+				if autoYes {
+					runSudo = false // not sure which is better, going with this for now
+				} else {
+					if runSudo, err = prompt.YesNo("Unsure if sudo is required. Do you want to run the update with sudo?"); err != nil {
+						return fmt.Errorf("failed to prompt for sudo: %w", err)
+					}
 				}
 			}
 		}
@@ -107,7 +123,7 @@ func update(ctx context.Context, version string) error {
 	defer cancel()
 
 	cmd := exec.CommandContext(iCtx, "bash", "-c", pipeline)
-	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
+	cmd.Stdin, cmd.Stdout, cmd.Stderr = os.Stdin, os.Stdout, os.Stderr
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("update failed: %w", err)
 	}

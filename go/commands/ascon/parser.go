@@ -2,10 +2,13 @@ package ascon
 
 import (
 	"bufio"
+	"context"
 	"fmt"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/Data-Corruption/stdx/xlog"
 )
 
 // TestVector models one KAT case parsed from the .rsp-style file.
@@ -58,7 +61,7 @@ func padBytesTo128b(s string) int {
 }
 
 // parse reads a .rsp-style file and returns a slice of TestVector structs.
-func parse(path string) ([]TestVector, error) {
+func parse(ctx context.Context, path string) ([]TestVector, error) {
 	f, err := os.Open(path)
 	if err != nil {
 		return nil, err
@@ -68,10 +71,14 @@ func parse(path string) ([]TestVector, error) {
 	var v TestVector
 	var out []TestVector
 	sc := bufio.NewScanner(f)
+	// allow very long KAT lines (default token limit is ~64KiB)
+	sc.Buffer(make([]byte, 0, 64*1024), 10*1024*1024)
 	ln := 0
 	for sc.Scan() {
 		line := strings.TrimSpace(sc.Text())
 		if line == "" {
+			xlog.Debugf(ctx, "skipping empty line %d", ln)
+			ln++
 			continue
 		}
 		parts := strings.SplitN(line, "=", 2)
@@ -83,8 +90,8 @@ func parse(path string) ([]TestVector, error) {
 
 		switch tag {
 		case "Count":
-			// flush previous vector
-			if v.isZero() {
+			// flush previous vector if it has content
+			if !v.isZero() {
 				out = append(out, v)
 			}
 			v = TestVector{}
@@ -100,7 +107,9 @@ func parse(path string) ([]TestVector, error) {
 		case "CT":
 			v.CT = val
 		}
+		ln++
 	}
+	xlog.Debugf(ctx, "scanned %d lines", ln)
 	// push last one
 	if !v.isZero() {
 		out = append(out, v)

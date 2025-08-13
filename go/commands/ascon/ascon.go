@@ -63,15 +63,15 @@ var Command = &cli.Command{
 		// ---- Generate rom ----
 
 		// parse input
-		vectors, err := parse(inPath)
+		vectors, err := parse(ctx, inPath)
 		if err != nil {
 			return fmt.Errorf("failed to parse KAT file: %w", err)
 		}
-		xlog.Debugf(ctx, "parsed %d vectors", len(vectors))
+		xlog.Infof(ctx, "parsed %d vectors", len(vectors))
 
 		// generate sv code
-		code := generate(vectors, swap)
-		xlog.Debugf(ctx, "generated %d bytes of code", len(code))
+		code := generate(ctx, vectors, swap)
+		xlog.Infof(ctx, "generated %d bytes of code", len(code))
 
 		// write output
 		tmpPath := outPath + ".tmp"
@@ -81,7 +81,7 @@ var Command = &cli.Command{
 		if err := os.Rename(tmpPath, outPath); err != nil {
 			return fmt.Errorf("failed to rename temporary file: %w", err)
 		}
-		xlog.Debugf(ctx, "wrote %s", outPath)
+		xlog.Infof(ctx, "wrote %s", outPath)
 
 		return nil
 	},

@@ -1,6 +1,7 @@
 package ascon
 
 import (
+	"context"
 	"fmt"
 	"strings"
 )
@@ -107,7 +108,7 @@ func emitVecLines(sb *strings.Builder, kind string, cnt int, field string, cap3 
 	}
 }
 
-func generate(vs []TestVector, sm ByteSwapMode) string {
+func generate(ctx context.Context, vs []TestVector, sm ByteSwapMode) string {
 	var ptCase, adCase, ctCase strings.Builder
 
 	for _, v := range vs {

@@ -27,6 +27,10 @@ func LatestGitHubReleaseTag(ctx context.Context, repoURL string) (string, error)
 	}
 	defer resp.Body.Close()
 
+	if resp.StatusCode < 300 || resp.StatusCode > 399 {
+		return "", fmt.Errorf("unexpected status %s", resp.Status)
+	}
+
 	loc := resp.Header.Get("Location") // e.g. ".../releases/tag/v2.1.0"
 	if loc == "" {
 		return "", fmt.Errorf("no redirect; status %s", resp.Status)

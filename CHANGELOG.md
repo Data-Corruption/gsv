@@ -1,5 +1,19 @@
 # Changelog
 
+## [v0.1.1] - 2025-08-13
+
+### Fixed
+- ascon: Correctly flush previous vector on new `Count`; prevents dropping vectors during parse.
+- main: Remove panics during startup; exit non‑zero with clear stderr messages instead.
+
+### Changed
+- ascon: Thread `context.Context` through parser/generator; promote key logs to info; add scan diagnostics.
+- main: Use `Name` for log dir (`~/.[name]/logs`) and `DefaultLogLevel` for logger init.
+- gitignore: Add `test/` to `.gitignore`.
+ - main: Add Ctrl‑C handling; respect missing HOME; write errors to stderr; non‑zero exit on failure.
+ - update: Respect global `--yes` to auto‑approve sudo prompts; better error messages; wire timeouts to parent context.
+ - parser: Increase scanner buffer to support large KAT lines.
+
 ## [v0.1.0] - 2025-08-11
 
 ### Added
