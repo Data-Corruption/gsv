@@ -1,5 +1,14 @@
 # Changelog
 
+## [v0.1.2] - 2025-08-13
+
+### Fixed
+- main: Removed mistaken additional part in log path.
+
+### Changed
+- readme: simplified and added build status badge.
+- workflow: small rename
+
 ## [v0.1.1] - 2025-08-13
 
 ### Fixed

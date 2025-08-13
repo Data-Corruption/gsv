@@ -20,7 +20,7 @@ const Name = "gsv"
 
 // ----------------------------------------------------------------------------
 
-const DefaultLogLevel = "warn"
+const DefaultLogLevel = "info"
 
 var Version string // set by build script
 
@@ -49,7 +49,7 @@ func main() {
 	}
 
 	// init logger
-	log, err := xlog.New(filepath.Join(logPath, "logs"), DefaultLogLevel)
+	log, err := xlog.New(logPath, DefaultLogLevel)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed to initialize logger: %s\n", err)
 		os.Exit(1)
