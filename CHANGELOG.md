@@ -1,5 +1,10 @@
 # Changelog
 
+## [v0.1.3] - 2025-08-22
+
+### Fixed
+- main: Changed return logic. I read os.Exit ignores defers, unsure if true and too lazy to test so i'm playing it safe.
+
 ## [v0.1.2] - 2025-08-13
 
 ### Fixed

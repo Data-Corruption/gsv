@@ -24,7 +24,9 @@ const DefaultLogLevel = "info"
 
 var Version string // set by build script
 
-func main() {
+func main() { os.Exit(run()) }
+
+func run() int {
 	// Init context
 
 	// base context with interrupt/termination handling
@@ -45,14 +47,14 @@ func main() {
 	logPath := filepath.Join(homeDir, "."+Name, "logs")
 	if err := os.MkdirAll(logPath, 0755); err != nil {
 		fmt.Fprintf(os.Stderr, "failed to create log path: %s\n", err)
-		os.Exit(1)
+		return 1
 	}
 
 	// init logger
 	log, err := xlog.New(logPath, DefaultLogLevel)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed to initialize logger: %s\n", err)
-		os.Exit(1)
+		return 1
 	}
 	ctx = xlog.IntoContext(ctx, log)
 	defer log.Close()
@@ -93,6 +95,7 @@ func main() {
 	if err := app.Run(ctx, os.Args); err != nil {
 		log.Error(err)
 		fmt.Fprintln(os.Stderr, err)
-		defer os.Exit(1) // defer to ensure log / other cleanup is done
+		return 1
 	}
+	return 0
 }
