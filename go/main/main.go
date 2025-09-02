@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"sprout/go/commands"
+	"sprout/go/commands/ascon"
 	"sprout/go/database"
 	"sprout/go/database/config"
 	"sprout/go/database/datapath"
@@ -22,7 +23,7 @@ import (
 
 // Template variables ---------------------------------------------------------
 
-const Name = "sprout" // root command name
+const Name = "gsv" // root command name
 
 // ----------------------------------------------------------------------------
 
@@ -135,7 +136,7 @@ func run() (int, error) {
 	app := &cli.Command{
 		Name:    Name,
 		Version: Version,
-		Usage:   "example CLI application with web capabilities",
+		Usage:   "collection of miscellaneous SystemVerilog code generators",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:  "log",
@@ -151,7 +152,7 @@ func run() (int, error) {
 		Commands: []*cli.Command{
 			commands.Update,
 			commands.UpdateToggleNotify,
-			commands.Service,
+			ascon.Ascon,
 		},
 		Before: func(ctx context.Context, cmd *cli.Command) (context.Context, error) {
 			// insert app name into context

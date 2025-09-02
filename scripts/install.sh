@@ -12,11 +12,11 @@
 # Template variables ----------------------------------------------------------
 
 REPO_OWNER="Data-Corruption"
-REPO_NAME="sprout"
-APP_NAME="sprout"
+REPO_NAME="gsv"
+APP_NAME="gsv"
 
-SERVICE="true"
-SERVICE_DESC="web server daemon for CLI application sprout"
+SERVICE="false"
+SERVICE_DESC="web server daemon for CLI application gsv"
 SERVICE_ARGS="service run"
 
 # Startup ---------------------------------------------------------------------
