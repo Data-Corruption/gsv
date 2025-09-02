@@ -1,4 +1,4 @@
-# gsv [![Build](https://github.com/Data-Corruption/gsv/actions/workflows/build.yml/badge.svg)](https://github.com/Data-Corruption/gsv/actions/workflows/build.yml)
+# gsvc [![Build](https://github.com/Data-Corruption/gsvc/actions/workflows/build.yml/badge.svg)](https://github.com/Data-Corruption/gsvc/actions/workflows/build.yml)
 
 Collection of miscellaneous SystemVerilog code generators.
 
@@ -9,25 +9,25 @@ Collection of miscellaneous SystemVerilog code generators.
 ### Linux
 
 ```sh
-curl -sSfL https://raw.githubusercontent.com/Data-Corruption/gsv/main/scripts/install.sh | bash
+curl -sSfL https://raw.githubusercontent.com/Data-Corruption/gsvc/main/scripts/install.sh | bash
 ```
 
 ### Windows (with WSL installed)
 
 PowerShell:
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iex "& { $(irm https://raw.githubusercontent.com/Data-Corruption/gsv/main/scripts/install.ps1) }"
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex "& { $(irm https://raw.githubusercontent.com/Data-Corruption/gsvc/main/scripts/install.ps1) }"
 ```
 
 ## Usage
 
-`gsv subcommand <required arg> [optional arg]`  
-`gsv -h subcommand` Help for any subcommand
+`gsvc subcommand <required arg> [optional arg]`  
+`gsvc -h subcommand` Help for any subcommand
 
 ### ascon
 
 ```sh
-gsv ascon <inPath> [outPath] [--sb]
+gsvc ascon <inPath> [outPath] [--sb]
 ```
 
 Reads a 128-bit Known-Answer Test (KAT) vector file ([example](https://github.com/ascon/ascon-c/blob/main/crypto_aead/asconaead128/LWC_AEAD_KAT_128_128.txt)) and produces a SV ROM.
@@ -36,6 +36,6 @@ Reads a 128-bit Known-Answer Test (KAT) vector file ([example](https://github.co
 ### update
 
 ```sh
-gsv update
+gsvc update
 ```
-> updates gsv to the latest release.
+> updates gsvc to the latest release.

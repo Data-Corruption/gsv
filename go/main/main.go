@@ -23,7 +23,7 @@ import (
 
 // Template variables ---------------------------------------------------------
 
-const Name = "gsv" // root command name
+const Name = "gsvc" // root command name
 
 // ----------------------------------------------------------------------------
 

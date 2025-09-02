@@ -12,12 +12,12 @@
 # Template variables ----------------------------------------------------------
 
 REPO_OWNER="Data-Corruption"
-REPO_NAME="gsv"
-APP_NAME="gsv"
+REPO_NAME="gsvc"
+APP_NAME="gsvc"
 
 SERVICE="false"
-SERVICE_DESC="web server daemon for CLI application gsv"
-SERVICE_ARGS="service run"
+SERVICE_DESC=""
+SERVICE_ARGS=""
 
 # Startup ---------------------------------------------------------------------
 

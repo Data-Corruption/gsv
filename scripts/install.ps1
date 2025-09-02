@@ -9,8 +9,8 @@ param(
 # Template variables ----------------------------------------------------------
 
 $Owner   = "Data-Corruption"
-$Repo    = "gsv"
-$AppName = "gsv"
+$Repo    = "gsvc"
+$AppName = "gsvc"
 $Service = $false
 
 # -----------------------------------------------------------------------------

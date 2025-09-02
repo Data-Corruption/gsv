@@ -23,8 +23,8 @@ import (
 // Template variables ---------------------------------------------------------
 
 const (
-	RepoURL          = "https://github.com/Data-Corruption/gsv.git"
-	InstallScriptURL = "https://raw.githubusercontent.com/Data-Corruption/gsv/main/scripts/install.sh"
+	RepoURL          = "https://github.com/Data-Corruption/gsvc.git"
+	InstallScriptURL = "https://raw.githubusercontent.com/Data-Corruption/gsvc/main/scripts/install.sh"
 )
 
 // ----------------------------------------------------------------------------
