@@ -12,8 +12,9 @@ Collection of miscellaneous SystemVerilog code generators.
 curl -sSfL https://raw.githubusercontent.com/Data-Corruption/gsv/main/scripts/install.sh | bash
 ```
 
-### Windows With WSL _(run in admin PowerShell)_
+### Windows (with WSL installed)
 
+PowerShell:
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex "& { $(irm https://raw.githubusercontent.com/Data-Corruption/gsv/main/scripts/install.ps1) }"
 ```
